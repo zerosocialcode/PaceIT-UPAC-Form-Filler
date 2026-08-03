@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PaceIT UPAC Form Filler</title>
+  <style>
+    :root {
+      --navy: #0f2545;
+      --blue: #1d4ed8;
+      --teal: #0891b2;
+      --amber: #f59e0b;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header.topbar {
+      background: linear-gradient(120deg, var(--navy) 0%, var(--blue) 55%, var(--teal) 100%);
+      color: #fff;
+      padding: 26px 24px;
+      box-shadow: 0 2px 10px rgba(15, 37, 69, 0.25);
+    }
+    header.topbar .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    header.topbar h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: .01em;
+    }
+    header.topbar h1 span {
+      color: var(--amber);
+    }
+    header.topbar p {
+      margin: 6px 0 0;
+      font-size: 13.5px;
+      color: #dbeafe;
+    }
+    main {
+      max-width: 820px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px 28px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+    .hint code {
+      background: #eef2ff;
+      color: var(--blue);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    textarea {
+      width: 100%; min-height: 320px; font-family: 'Consolas', monospace; font-size: 14px;
+      padding: 12px; box-sizing: border-box; border: 1.5px solid var(--border); border-radius: 8px;
+      resize: vertical; transition: border-color .15s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+    }
+    button {
+      margin-top: 16px; padding: 11px 26px; font-size: 15px; font-weight: 600;
+      background: linear-gradient(120deg, var(--blue), var(--teal));
+      color: #fff; border: none; border-radius: 8px; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(29, 78, 216, 0.3);
+      transition: transform .1s, box-shadow .15s;
+    }
+    button:hover { box-shadow: 0 4px 10px rgba(29, 78, 216, 0.4); transform: translateY(-1px); }
+    .flash {
+      background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b;
+      padding: 10px 14px; border-radius: 8px; margin-bottom: 18px; font-size: 14px;
+    }
+    footer {
+      max-width: 820px; margin: 0 auto; padding: 0 16px 30px;
+      text-align: center; color: var(--muted); font-size: 12.5px;
+    }
+    footer a { color: var(--teal); text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <h1>PaceIT <span>UPAC</span> Form Filler</h1>
+      <p>Paste your raw record data, fill in whatever's missing, and get a ready-to-send EDC form.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for m in messages %}
+            <div class="flash">{{ m }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <p class="hint">
+        Paste the full contents of your <code>t.txt</code> file below. Multiple institution
+        records separated by a line that just says <code>another</code> are all supported —
+        they'll be split automatically, same as before.
+      </p>
+
+      <form action="{{ url_for('parse') }}" method="post">
+        <textarea name="raw_text" placeholder="Paste t.txt contents here..."></textarea>
+        <br>
+        <button type="submit">Parse &amp; Continue →</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    Made by <a href="https://github.com/zerosocialcode" target="_blank" rel="noopener">zerosocialcode</a>
+  </footer>
+</body>
+</html>
